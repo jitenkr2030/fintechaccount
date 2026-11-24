@@ -1,0 +1,13 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<h1 class="h3">{{ assessment.title }}</h1>
+<p class="text-muted">{{ assessment.description }}</p>
+<p>Duration: {{ assessment.duration_minutes }} mins · Passing: {{ assessment.passing_score_pct }}% · Max attempts: {{ assessment.max_attempts }}</p>
+{% if user.is_authenticated %}
+<a href="{% url 'assessments:take' assessment.pk %}" class="btn btn-primary">Start attempt</a>
+{% endif %}
+<h6 class="mt-4">Questions ({{ questions|length }})</h6>
+{% for q in questions %}<p>{{ forloop.counter }}. {{ q.body }} <span class="text-muted">({{ q.marks }} marks)</span></p>{% endfor %}
+<h6 class="mt-4">Your attempts</h6>
+{% for a in attempts %}<p>{{ a.score_pct }}% - {{ a.get_status_display }} ({{ a.started_at }})</p>{% empty %}<p class="text-muted">No attempts yet.</p>{% endfor %}
+{% endblock %}

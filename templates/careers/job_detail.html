@@ -1,0 +1,31 @@
+{% extends 'core/base.html' %}
+{% load static humanize %}
+{% block title %}{{ job.title }}{% endblock %}
+{% block content %}
+<div class="card shadow-sm mb-3"><div class="card-body">
+  <h1 class="h3">{{ job.title }}</h1>
+  {% if job.employer %}<p class="text-muted"><a href="{% url 'employers:detail' slug=job.employer.slug %}">{{ job.employer.company_name }}</a></p>{% endif %}
+  <p class="text-muted small">
+    <span class="badge bg-secondary">{{ job.get_employment_type_display }}</span>
+    <span class="badge bg-info">{{ job.get_experience_level_display }}</span>
+    {% if job.is_remote %}<span class="badge bg-success">Remote</span>{% endif %}
+    {% if job.is_wfh %}<span class="badge bg-primary">WFH</span>{% endif %}
+    {% if job.is_featured %}<span class="badge bg-warning">Featured</span>{% endif %}
+  </p>
+  <p class="mb-2"><i class="bi bi-geo-alt"></i> {{ job.location_city|default:'-' }} · Salary: {{ job.salary_range }}</p>
+  <h6>Description</h6><p>{{ job.description|linebreaksbr }}</p>
+  {% if job.requirements %}<h6>Requirements</h6><p>{{ job.requirements|linebreaksbr }}</p>{% endif %}
+  {% if job.responsibilities %}<h6>Responsibilities</h6><p>{{ job.responsibilities|linebreaksbr }}</p>{% endif %}
+  {% if job.skills_required %}<p><strong>Skills:</strong> {{ job.skills_required }}</p>{% endif %}
+  <p class="small text-muted">Posted {{ job.posted_at|naturaltime }} · {{ job.applications_count }} applicants</p>
+  {% if user.is_authenticated %}
+    {% if user_application %}
+      <span class="badge bg-info">You applied ({{ user_application.get_status_display }})</span>
+    {% else %}
+      <a href="{% url 'applications:apply' slug=job.slug %}" class="btn btn-primary">Apply now</a>
+    {% endif %}
+  {% else %}
+    <a href="{% url 'accounts:login' %}" class="btn btn-primary">Log in to apply</a>
+  {% endif %}
+</div></div>
+{% endblock %}

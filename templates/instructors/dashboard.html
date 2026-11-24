@@ -1,0 +1,21 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<h1 class="h3 mb-4">Instructor Dashboard</h1>
+{% if profile %}
+<div class="row g-3 mb-4">
+  <div class="col-md-3"><div class="card text-center"><div class="card-body"><h3>{{ profile.courses_count|default:courses|length }}</h3><p class="text-muted mb-0">Courses</p></div></div></div>
+  <div class="col-md-3"><div class="card text-center"><div class="card-body"><h3>{{ total_students }}</h3><p class="text-muted mb-0">Students</p></div></div></div>
+  <div class="col-md-3"><div class="card text-center"><div class="card-body"><h3>₹{{ pending_payout|floatformat:0 }}</h3><p class="text-muted mb-0">Pending payout</p></div></div></div>
+  <div class="col-md-3"><div class="card text-center"><div class="card-body"><h3>{{ profile.avg_rating|default:'-' }}</h3><p class="text-muted mb-0">Avg rating</p></div></div></div>
+</div>
+<div class="d-flex gap-2 mb-3">
+  <a href="{% url 'courses:create' %}" class="btn btn-primary">+ Create course</a>
+  <a href="{% url 'instructors:edit' %}" class="btn btn-outline-secondary">Edit profile</a>
+</div>
+<h5>Your courses</h5>
+{% for c in courses %}<p><a href="{% url 'courses:detail' slug=c.slug %}">{{ c.title }}</a> <span class="text-muted small">({{ c.students_count }} students, {{ c.status }})</span></p>{% endfor %}
+{% else %}
+<p>You don't have an instructor profile yet.</p>
+<a href="{% url 'instructors:become' %}" class="btn btn-primary">Become an instructor</a>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'core/base.html' %}
+{% block title %}My Courses{% endblock %}
+{% block content %}
+<h1 class="h3 mb-4">My Courses</h1>
+<div class="row g-3">
+{% for e in enrollments %}
+<div class="col-md-6 col-lg-4"><div class="card h-100 shadow-sm"><div class="card-body">
+  <a href="{% url 'courses:learn' slug=e.course.slug %}" class="text-decoration-none"><h6>{{ e.course.title }}</h6></a>
+  <p class="small text-muted mb-1">{{ e.get_status_display }}</p>
+  <div class="progress"><div class="progress-bar" style="width:{{ e.progress_pct }}%"></div></div>
+</div></div></div>
+{% empty %}<div class="col-12"><div class="alert alert-info">You are not enrolled in any course yet. <a href="{% url 'courses:list' %}">Browse courses</a></div></div>{% endfor %}
+</div>
+{% endblock %}

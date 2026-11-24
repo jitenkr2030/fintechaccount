@@ -1,0 +1,10 @@
+{% extends 'core/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<h1 class="h4">Report #{{ report.pk }}</h1>
+<p><strong>Target:</strong> {{ report.get_target_type_display }} #{{ report.target_id }}<br><strong>Reason:</strong> {{ report.get_reason_display }}<br><strong>Status:</strong> {{ report.get_status_display }}<br><strong>Description:</strong> {{ report.description }}</p>
+{% if report.target_url %}<p><a href="{{ report.target_url }}" target="_blank">View reported content</a></p>{% endif %}
+<h6>Take action</h6>
+<form method="post" action="{% url 'moderation:take_action' report.pk %}">{% csrf_token %}{{ action_form|crispy }}<button class="btn btn-primary">Take action</button></form>
+{% if actions %}<h6 class="mt-3">Previous actions</h6>{% for a in actions %}<p class="small">{{ a.admin|default:'Admin' }} {{ a.get_action_display }} on {{ a.created_at|date:'j M Y' }}</p>{% endfor %}{% endif %}
+{% endblock %}

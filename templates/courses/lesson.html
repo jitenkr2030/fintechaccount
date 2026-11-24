@@ -1,0 +1,15 @@
+{% extends 'core/base.html' %}
+{% block title %}{{ lesson.title }}{% endblock %}
+{% block content %}
+<a href="{% url 'courses:learn' slug=course.slug %}" class="small">&larr; Back to course</a>
+<h1 class="h4">{{ lesson.title }}</h1>
+{% if lesson.video_url %}
+<div class="ratio ratio-16x9 mb-3"><iframe src="{{ lesson.video_url }}" allowfullscreen></iframe></div>
+{% endif %}
+<p>{{ lesson.body|linebreaksbr }}</p>
+{% if enrollment %}
+<form method="post" action="{% url 'courses:lesson_complete' slug=course.slug pk=lesson.pk %}">{% csrf_token %}
+  <button class="btn btn-success btn-sm">{% if progress.is_completed %}Completed ✓{% else %}Mark complete{% endif %}</button>
+</form>
+{% endif %}
+{% endblock %}

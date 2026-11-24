@@ -1,0 +1,21 @@
+{% extends 'core/base.html' %}
+{% block title %}Application: {{ application.job.title }}{% endblock %}
+{% block content %}
+<a href="{% url 'applications:my_list' %}" class="small">&larr; Back</a>
+<h1 class="h4">{{ application.job.title }}</h1>
+<p class="text-muted">Status: <span class="badge bg-secondary">{{ application.get_status_display }}</span></p>
+<p><strong>Cover letter:</strong><br>{{ application.cover_letter|linebreaksbr }}</p>
+{% if application.resume %}<p><a href="{{ application.resume.url }}">View resume</a></p>{% endif %}
+{% if is_applicant %}
+  {% if application.status != 'withdrawn' %}
+  <form method="post" action="{% url 'applications:withdraw' application.pk %}">{% csrf_token %}<button class="btn btn-outline-danger btn-sm">Withdraw</button></form>
+  {% endif %}
+{% elif is_employer %}
+  <form method="post" action="{% url 'applications:update_status' application.pk %}" class="d-inline">{% csrf_token %}
+    <select name="status" class="form-select form-select-sm d-inline-block" style="width:auto">
+      {% for s,label in application.STATUSES %}<option value="{{ s }}" {% if application.status == s %}selected{% endif %}>{{ label }}</option>{% endfor %}
+    </select>
+    <button class="btn btn-primary btn-sm">Update</button>
+  </form>
+{% endif %}
+{% endblock %}

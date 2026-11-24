@@ -1,0 +1,56 @@
+{% extends 'core/base.html' %}
+{% load static humanize %}
+{% block title %}Employers - FinTech Accountant{% endblock %}
+{% block content %}
+<section class="hero" style="padding:3rem 0 4rem">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-8">
+        <span class="badge bg-light text-brand mb-2 px-3 py-2 rounded-pill">Pillar C · Careers</span>
+        <h1>Hiring companies</h1>
+        <p class="lead">Browse companies hiring finance, accounting and FinTech professionals across India.</p>
+      </div>
+      <div class="col-lg-4 d-none d-lg-block text-center">
+        <i class="bi bi-building" style="font-size:6rem;opacity:.3"></i>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-pad-sm">
+  <div class="container">
+    <form method="get" class="mb-4">
+      <input name="q" class="form-control" placeholder="Company name, industry, city..." value="{{ request.GET.q }}">
+    </form>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <p class="text-muted mb-0">{{ employers|length }} companies</p>
+      <a href="{% url 'employers:become' %}" class="btn btn-brand btn-sm"><i class="bi bi-building"></i> List your company</a>
+    </div>
+    <div class="row g-4">
+      {% for e in employers %}
+      <div class="col-md-6 col-lg-4">
+        <div class="card h-100">
+          <div class="body p-4">
+            <div class="d-flex align-items-center mb-3">
+              {% if e.logo %}<img src="{{ e.logo.url }}" class="rounded me-3" width="56" height="56">{% else %}<div class="pillar-icon me-3" style="margin:0;width:56px;height:56px;font-size:1.4rem"><i class="bi bi-building"></i></div>{% endif %}
+              <div>
+                <h6 class="mb-0"><a href="{% url 'employers:detail' slug=e.slug %}" class="text-decoration-none text-dark">{{ e.company_name }}</a></h6>
+                {% if e.is_verified %}<span class="badge badge-verified"><i class="bi bi-patch-check"></i> Verified</span>{% endif %}
+              </div>
+            </div>
+            <p class="small text-muted mb-2">{{ e.tagline|default:e.about|truncatechars:100 }}</p>
+            <div class="meta">
+              {% if e.industry %}<span><i class="bi bi-bag"></i> {{ e.industry }}</span>{% endif %}
+              {% if e.company_size %}<span><i class="bi bi-people"></i> {{ e.company_size }}</span>{% endif %}
+              {% if e.headquarters_city %}<span><i class="bi bi-geo-alt"></i> {{ e.headquarters_city }}</span>{% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-12"><div class="alert alert-info">No employers listed yet.</div></div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

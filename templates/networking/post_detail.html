@@ -1,0 +1,44 @@
+{% extends 'core/base.html' %}
+{% load humanize %}
+{% load crispy_forms_tags %}
+{% block title %}{{ post.title|default:post.body|truncatechars:60 }}{% endblock %}
+{% block content %}
+<div class="card shadow-sm mb-3"><div class="card-body">
+  <div class="d-flex mb-2">
+    {% if post.author.avatar %}<img src="{{ post.author.avatar.url }}" class="rounded-circle me-2" width="40" height="40">{% endif %}
+    <div>
+      <a href="{% url 'profiles:detail' slug=post.author.profile.slug %}" class="text-decoration-none fw-semibold">{{ post.author.get_full_name }}</a>
+      <p class="small text-muted mb-0">{{ post.created_at|naturaltime }} · {{ post.get_post_type_display }}</p>
+    </div>
+  </div>
+  {% if post.title %}<h3>{{ post.title }}</h3>{% endif %}
+  <p class="mb-2">{{ post.body|linebreaksbr }}</p>
+  {% if post.image %}<img src="{{ post.image.url }}" class="img-fluid rounded mb-2">{% endif %}
+  {% if post.link_url %}<a href="{{ post.link_url }}" target="_blank" class="d-block text-primary">{{ post.link_url }}</a>{% endif %}
+  <div class="d-flex gap-3 mt-2 text-muted small">
+    <form method="post" action="{% url 'networking:post_like' post.pk %}" class="d-inline">
+      {% csrf_token %}
+      <button class="btn btn-sm btn-link text-decoration-none p-0">
+        <i class="bi {% if user_liked %}bi-heart-fill text-danger{% else %}bi-heart{% endif %}"></i>
+        {{ post.likes_count }} Likes
+      </button>
+    </form>
+    <span><i class="bi bi-chat"></i> {{ post.comments_count }} Comments</span>
+  </div>
+</div></div>
+<h5>Comments</h5>
+{% for c in comments %}
+  <div class="card mb-2"><div class="card-body p-2">
+    <strong>{{ c.author.get_full_name }}</strong> <span class="small text-muted">{{ c.created_at|naturaltime }}</span>
+    <p class="mb-0">{{ c.body|linebreaksbr }}</p>
+  </div></div>
+{% empty %}
+  <p class="text-muted">No comments yet.</p>
+{% endfor %}
+{% if user.is_authenticated %}
+<form method="post" action="{% url 'networking:comment_create' post.pk %}">{% csrf_token %}
+  {{ comment_form|crispy }}
+  <button class="btn btn-primary btn-sm">Comment</button>
+</form>
+{% endif %}
+{% endblock %}

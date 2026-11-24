@@ -1,0 +1,59 @@
+{% extends 'core/base.html' %}
+{% load static humanize %}
+{% block title %}Communities - FinTech Accountant{% endblock %}
+{% block content %}
+<section class="hero" style="padding:3rem 0 4rem">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-8">
+        <span class="badge bg-light text-brand mb-2 px-3 py-2 rounded-pill">Pillar A · Network</span>
+        <h1>Join a professional community</h1>
+        <p class="lead">Connect with peers in your specialisation — CA, GST, Tally, Banking, FinTech, Capital Markets, Excel and more.</p>
+      </div>
+      <div class="col-lg-4 d-none d-lg-block text-center">
+        <i class="bi bi-hash" style="font-size:6rem;opacity:.3"></i>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-pad-sm">
+  <div class="container">
+    <form method="get" class="row g-2 mb-4">
+      <div class="col-md-8"><input name="q" class="form-control" placeholder="Search communities..." value="{{ request.GET.q }}"></div>
+      <div class="col-md-3"><input name="category" class="form-control" placeholder="Category" value="{{ request.GET.category }}"></div>
+      <div class="col-md-1"><button class="btn btn-brand w-100"><i class="bi bi-search"></i></button></div>
+    </form>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <p class="text-muted mb-0">{{ communities|length }} communities</p>
+      <a href="{% url 'communities:create' %}" class="btn btn-brand btn-sm"><i class="bi bi-plus-lg"></i> Start a community</a>
+    </div>
+    <div class="row g-3">
+      {% for c in communities %}
+      <div class="col-md-6 col-lg-4">
+        <div class="card community-card">
+          <div class="body d-flex align-items-center">
+            <div class="pillar-icon me-3" style="width:56px;height:56px;font-size:1.6rem;margin:0;background:var(--brand-light);color:var(--brand)">
+              <i class="bi bi-hash"></i>
+            </div>
+            <div class="flex-grow-1">
+              <div class="d-flex align-items-center">
+                <a href="{% url 'communities:detail' slug=c.slug %}" class="text-decoration-none"><strong>{{ c.name }}</strong></a>
+                {% if c.is_official %}<i class="bi bi-patch-check-fill text-warning ms-2" title="Official community"></i>{% endif %}
+              </div>
+              <p class="small text-muted mb-1">{{ c.description|truncatechars:80 }}</p>
+              <div class="meta">
+                <span class="small text-muted"><i class="bi bi-people"></i> {{ c.members_count }} members</span>
+                {% if c.category %}<span class="small text-muted"><i class="bi bi-tag"></i> {{ c.category }}</span>{% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-12"><div class="alert alert-info">No communities yet. <a href="{% url 'communities:create' %}">Start the first one</a>.</div></div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,472 @@
+{% extends 'core/base.html' %}
+{% load static humanize %}
+{% block title %}FinTech Accountant - Connect. Learn. Grow.{% endblock %}
+
+{% block content %}
+<!-- ============= HERO ============= -->
+<section class="hero">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-7">
+        <span class="badge bg-light text-brand mb-3 px-3 py-2 rounded-pill">India's #1 finance community platform</span>
+        <h1>Connect. Learn.<br><span class="text-warning">Grow.</span></h1>
+        <p class="lead mt-3">The professional home for <strong>fintech accountants</strong> — a specialised ecosystem combining elements of LinkedIn, Coursera and a finance-sector job portal. Learn payments reconciliation, SaaS revenue, crypto accounting and more — built for India's accounting, finance and FinTech community.</p>
+
+        <form class="search-box mt-4" action="{% url 'courses:list' %}" method="get">
+          <input type="text" name="q" placeholder="Search courses, e.g. Payments Reconciliation, Crypto Accounting, SaaS Revenue...">
+          <button class="btn btn-brand" type="submit"><i class="bi bi-search"></i> Search</button>
+        </form>
+
+        {% if not user.is_authenticated %}
+        <div class="mt-4 d-flex flex-wrap gap-2">
+          <a href="{% url 'accounts:signup' %}" class="btn btn-light-hero btn-lg">Join free <i class="bi bi-arrow-right"></i></a>
+          <a href="{% url 'accounts:login' %}" class="btn btn-outline-light btn-lg">Log in</a>
+        </div>
+        {% else %}
+        <div class="mt-4">
+          <a href="{% url 'networking:feed' %}" class="btn btn-light-hero btn-lg">Go to feed <i class="bi bi-arrow-right"></i></a>
+        </div>
+        {% endif %}
+
+        <div class="stat-strip">
+          <div><div class="num">{{ stats.members|intcomma }}</div><div class="lbl">Members</div></div>
+          <div><div class="num">{{ stats.courses }}</div><div class="lbl">Courses</div></div>
+          <div><div class="num">{{ stats.jobs }}</div><div class="lbl">Open Jobs</div></div>
+          <div><div class="num">{{ stats.communities }}</div><div class="lbl">Communities</div></div>
+        </div>
+      </div>
+      <div class="col-lg-5 d-none d-lg-block">
+        <div class="text-center">
+          <div class="card bg-white border-0 shadow p-4 d-inline-block text-start" style="border-radius:1.5rem;max-width:380px">
+            <div class="d-flex align-items-center mb-3">
+              <span class="directory-avatar avatar-sm me-2">P</span>
+              <div><strong>Priya Sharma</strong><br><small class="text-muted">B.Com Final Year</small></div>
+              <span class="badge bg-success ms-auto">Student</span>
+            </div>
+            <p class="mb-2 small text-muted">Started learning GST &rarr; connected with 3 CAs &rarr; landed an internship at a Big 4 firm.</p>
+            <div class="d-flex gap-2">
+              <span class="skill-chip">GST</span>
+              <span class="skill-chip">Tally</span>
+              <span class="skill-chip">Excel</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= FINTECH ACCOUNTING TRACK ============= -->
+<section class="section-pad bg-brand-light">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Flagship track</span>
+      <h2>The FinTech Accountant Track</h2>
+      <p>Eight specialist courses covering the skills fintech companies actually hire for — payments rails, SaaS revenue, crypto, BNPL, BaaS, RegTech and fintech FP&amp;A. Each course is taught by a practitioner who has done the work at companies like Razorpay and PayPal.</p>
+    </div>
+    <div class="row g-3">
+      <div class="col-6 col-md-3">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body p-3 text-center">
+            <div class="pillar-icon brand mx-auto mb-2" style="width:44px;height:44px;font-size:1.2rem"><i class="bi bi-credit-card-2-front-fill"></i></div>
+            <h6 class="mb-1">Payments Rails &amp; Reconciliation</h6>
+            <small class="text-muted d-block">UPI · NPCI · Stripe · Razorpay · PayPal</small>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body p-3 text-center">
+            <div class="pillar-icon gold mx-auto mb-2" style="width:44px;height:44px;font-size:1.2rem"><i class="bi bi-graph-up-arrow"></i></div>
+            <h6 class="mb-1">SaaS &amp; Subscription Billing</h6>
+            <small class="text-muted d-block">MRR/ARR · Deferred Revenue · ASC 606 / Ind AS 115</small>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body p-3 text-center">
+            <div class="pillar-icon teal mx-auto mb-2" style="width:44px;height:44px;font-size:1.2rem"><i class="bi bi-currency-exchange"></i></div>
+            <h6 class="mb-1">Multi-Currency &amp; FX</h6>
+            <small class="text-muted d-block">Revaluation · Hedge Accounting · Intercompany</small>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body p-3 text-center">
+            <div class="pillar-icon brand mx-auto mb-2" style="width:44px;height:44px;font-size:1.2rem"><i class="bi bi-currency-bitcoin"></i></div>
+            <h6 class="mb-1">Crypto &amp; Digital Assets</h6>
+            <small class="text-muted d-block">On-chain · Cost-basis · Stablecoins · 30% tax / 1% TDS</small>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body p-3 text-center">
+            <div class="pillar-icon gold mx-auto mb-2" style="width:44px;height:44px;font-size:1.2rem"><i class="bi bi-bank2"></i></div>
+            <h6 class="mb-1">Lending &amp; BNPL</h6>
+            <small class="text-muted d-block">EIR/AMORT · NPA · Securitisation · Write-offs</small>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body p-3 text-center">
+            <div class="pillar-icon teal mx-auto mb-2" style="width:44px;height:44px;font-size:1.2rem"><i class="bi bi-diagram-3-fill"></i></div>
+            <h6 class="mb-1">Embedded Finance &amp; BaaS</h6>
+            <small class="text-muted d-block">Ledger-as-a-Service · Virtual Accounts · Float</small>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body p-3 text-center">
+            <div class="pillar-icon brand mx-auto mb-2" style="width:44px;height:44px;font-size:1.2rem"><i class="bi bi-shield-lock-fill"></i></div>
+            <h6 class="mb-1">RegTech &amp; Compliance Automation</h6>
+            <small class="text-muted d-block">KYC/AML · FEMA · DIN/PAN · Audit Trail</small>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body p-3 text-center">
+            <div class="pillar-icon gold mx-auto mb-2" style="width:44px;height:44px;font-size:1.2rem"><i class="bi bi-cash-stack"></i></div>
+            <h6 class="mb-1">Fintech FP&amp;A &amp; Treasury</h6>
+            <small class="text-muted d-block">CAC/LTV · Burn &amp; Runway · Treasury Ops</small>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <a href="{% url 'courses:list' %}?category=FinTech" class="btn btn-brand btn-lg">Explore the FinTech track <i class="bi bi-arrow-right"></i></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============= THREE PILLARS ============= -->
+<section class="section-pad">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Three connected ecosystems</span>
+      <h2>One platform, three ways to grow</h2>
+      <p>One account, one professional identity — connect, learn and find opportunities in finance and FinTech.</p>
+    </div>
+    <div class="row g-4">
+      {% for p in pillars %}
+      <div class="col-md-4">
+        <div class="card pillar-card">
+          <div class="card-body p-4">
+            <div class="pillar-icon {{ p.color }}"><i class="bi bi-{{ p.icon }}"></i></div>
+            <h4>{{ p.name }}</h4>
+            <p class="text-muted small">{{ p.tagline }}</p>
+            <p class="small">{{ p.desc }}</p>
+            <ul class="pillar-list">
+              {% for item in p.items %}<li><i class="bi bi-check-circle-fill"></i> {{ item }}</li>{% endfor %}
+            </ul>
+            <a href="{{ p.url }}" class="btn btn-brand btn-sm">Explore {{ p.name }} <i class="bi bi-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ============= FEATURED COURSES ============= -->
+<section class="section-pad bg-brand-light">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-end mb-4">
+      <div>
+        <span class="eyebrow d-inline-block">Pillar B · Learning</span>
+        <h2 class="mt-2 mb-0">Featured courses</h2>
+      </div>
+      <a href="{% url 'courses:list' %}" class="btn btn-outline-brand btn-sm">View all courses <i class="bi bi-arrow-right"></i></a>
+    </div>
+    {% if featured_courses %}
+    <div class="row g-4">
+      {% for c in featured_courses %}
+      <div class="col-md-6 col-lg-4">
+        <div class="card course-card">
+          <div class="cover {% cycle 'gold' 'teal' 'purple' 'rose' '' %}">
+            <i class="bi bi-mortarboard-fill"></i>
+          </div>
+          <div class="body">
+            {% if c.category %}<span class="cat-tag">{{ c.category.name }}</span>{% endif %}
+            <h6 class="mb-1"><a href="{% url 'courses:detail' slug=c.slug %}" class="text-decoration-none text-dark">{{ c.title }}</a></h6>
+            <p class="text-muted small mb-2">{{ c.subtitle|default:c.description|truncatechars:80 }}</p>
+            <div class="meta">
+              <span><i class="bi bi-bar-chart"></i> {{ c.get_level_display }}</span>
+              <span><i class="bi bi-clock"></i> {{ c.duration_hours }}h</span>
+              <span><i class="bi bi-people"></i> {{ c.students_count|intcomma }}</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mt-2">
+              {% if c.is_free %}<span class="price-free">Free</span>{% else %}<span class="price-tag">₹{{ c.effective_price|intcomma }}</span>{% endif %}
+              {% if c.rating %}<span class="small text-muted"><i class="bi bi-star-fill text-warning"></i> {{ c.rating }}</span>{% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center text-muted py-5">
+      <i class="bi bi-mortarboard display-1 text-muted"></i>
+      <p class="mt-3">Courses coming soon. <a href="{% url 'accounts:signup' %}">Sign up</a> to be notified.</p>
+    </div>
+    {% endif %}
+
+    <!-- Course categories -->
+    {% if course_categories %}
+    <div class="mt-5">
+      <h6 class="text-center text-muted mb-3">Browse by category</h6>
+      <div class="d-flex flex-wrap justify-content-center gap-2">
+        {% for cat in course_categories %}
+        <a href="{% url 'courses:list' %}?category={{ cat.slug }}" class="skill-chip">{{ cat.name }}</a>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- ============= FEATURED JOBS ============= -->
+<section class="section-pad">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-end mb-4">
+      <div>
+        <span class="eyebrow d-inline-block">Pillar C · Careers</span>
+        <h2 class="mt-2 mb-0">Featured opportunities</h2>
+      </div>
+      <a href="{% url 'careers:list' %}" class="btn btn-outline-brand btn-sm">View all jobs <i class="bi bi-arrow-right"></i></a>
+    </div>
+    {% if featured_jobs %}
+    <div class="row g-4">
+      {% for j in featured_jobs %}
+      <div class="col-md-6 col-lg-4">
+        <div class="card job-card">
+          <div class="body">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              {% if j.is_featured %}<span class="badge bg-warning">Featured</span>{% else %}<span class="badge bg-light text-muted">New</span>{% endif %}
+              {% if j.is_remote %}<span class="badge bg-success">Remote</span>{% endif %}
+            </div>
+            <h6 class="mb-1"><a href="{% url 'careers:detail' slug=j.slug %}" class="text-decoration-none text-dark">{{ j.title }}</a></h6>
+            {% if j.employer %}<p class="company mb-1"><i class="bi bi-building"></i> {{ j.employer.company_name }}</p>{% endif %}
+            <div class="meta">
+              {% if j.location_city %}<span><i class="bi bi-geo-alt"></i> {{ j.location_city }}</span>{% endif %}
+              <span><i class="bi bi-briefcase"></i> {{ j.get_employment_type_display }}</span>
+              {% if j.is_wfh %}<span><i class="bi bi-house"></i> WFH</span>{% endif %}
+            </div>
+            <div class="d-flex justify-content-between align-items-center mt-2">
+              <span class="salary">{{ j.salary_range }}</span>
+              <a href="{% url 'careers:detail' slug=j.slug %}" class="btn btn-sm btn-outline-brand">Apply</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center text-muted py-5">
+      <i class="bi bi-briefcase display-1 text-muted"></i>
+      <p class="mt-3">No jobs posted yet. <a href="{% url 'employers:become' %}">Post a job</a> to reach finance professionals.</p>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- ============= COMMUNITIES ============= -->
+<section class="section-pad bg-brand-light">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-end mb-4">
+      <div>
+        <span class="eyebrow d-inline-block">Pillar A · Network</span>
+        <h2 class="mt-2 mb-0">Join a community</h2>
+      </div>
+      <a href="{% url 'communities:list' %}" class="btn btn-outline-brand btn-sm">All communities <i class="bi bi-arrow-right"></i></a>
+    </div>
+    {% if official_communities %}
+    <div class="row g-3">
+      {% for c in official_communities %}
+      <div class="col-md-6 col-lg-4">
+        <div class="card community-card">
+          <div class="body d-flex align-items-center">
+            <div class="pillar-icon me-3" style="width:48px;height:48px;font-size:1.3rem;margin:0;background:var(--brand-light);color:var(--brand)">
+              <i class="bi bi-hash"></i>
+            </div>
+            <div class="flex-grow-1">
+              <a href="{% url 'communities:detail' slug=c.slug %}" class="text-decoration-none"><strong>{{ c.name }}</strong></a>
+              <p class="small text-muted mb-0">{{ c.members_count }} members</p>
+            </div>
+            {% if c.is_official %}<i class="bi bi-patch-check-fill text-warning" title="Official"></i>{% endif %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-muted text-center">Communities coming soon.</p>
+    {% endif %}
+  </div>
+</section>
+
+<!-- ============= UPCOMING EVENTS ============= -->
+{% if upcoming_events %}
+<section class="section-pad">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-end mb-4">
+      <div>
+        <span class="eyebrow d-inline-block">Network · Events</span>
+        <h2 class="mt-2 mb-0">Upcoming events</h2>
+      </div>
+      <a href="{% url 'events:list' %}" class="btn btn-outline-brand btn-sm">All events <i class="bi bi-arrow-right"></i></a>
+    </div>
+    <div class="row g-4">
+      {% for e in upcoming_events %}
+      <div class="col-md-4">
+        <div class="card event-card">
+          <div class="cover"><i class="bi bi-calendar-event"></i></div>
+          <div class="body">
+            <span class="badge bg-info mb-2">{{ e.get_event_type_display }}</span>
+            <h6><a href="{% url 'events:detail' slug=e.slug %}" class="text-decoration-none text-dark">{{ e.title }}</a></h6>
+            <p class="small text-muted mb-2"><i class="bi bi-calendar"></i> {{ e.starts_at|date:"j M Y, g:i A" }}</p>
+            <p class="small text-muted"><i class="bi bi-geo-alt"></i> {% if e.is_online %}Online{% else %}{{ e.venue|default:e.city }}{% endif %}</p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- ============= WHY US ============= -->
+<section class="section-pad bg-brand text-white">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow" style="background:rgba(200,164,92,.2);color:var(--accent)">Why FinTech Accountant</span>
+      <h2 class="text-white">Built for finance, not for everyone</h2>
+      <p class="text-white-50">LinkedIn serves everyone. We serve accounting and finance professionals with tangible, industry-specific value.</p>
+    </div>
+    <div class="row g-4 feature-grid">
+      <div class="col-md-6 col-lg-3">
+        <div class="feature-icon bg-light text-brand"><i class="bi bi-people"></i></div>
+        <h5 class="text-white">Industry connections</h5>
+        <p class="text-white-50 small">Connect with CAs, CMAs, accountants, bankers, FinTech developers and finance students.</p>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="feature-icon bg-light text-brand"><i class="bi bi-mortarboard"></i></div>
+        <h5 class="text-white">Practical education</h5>
+        <p class="text-white-50 small">Learn GST, Income Tax, Tally, Excel, financial modelling and FinTech from practitioners.</p>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="feature-icon bg-light text-brand"><i class="bi bi-shield-check"></i></div>
+        <h5 class="text-white">Verified opportunities</h5>
+        <p class="text-white-50 small">Jobs and internships from verified employers with credential verification on consent.</p>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="feature-icon bg-light text-brand"><i class="bi bi-graph-up-arrow"></i></div>
+        <h5 class="text-white">Career growth</h5>
+        <p class="text-white-50 small">AI recommendations for courses and jobs based on your skills and profile.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= HOW IT WORKS ============= -->
+<section class="section-pad">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">How it works</span>
+      <h2>Your journey on the platform</h2>
+      <p>A student learns accounting, connects with professionals, develops skills, gets hired, and eventually becomes a mentor or employer on the same platform.</p>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-3 text-center">
+        <div class="steps-num">1</div>
+        <h6>Create your profile</h6>
+        <p class="text-muted small">One account with multiple roles — student, professional, instructor, employer.</p>
+      </div>
+      <div class="col-md-6 col-lg-3 text-center">
+        <div class="steps-num">2</div>
+        <h6>Learn & build skills</h6>
+        <p class="text-muted small">Enroll in courses, take assessments, earn course-completion certificates.</p>
+      </div>
+      <div class="col-md-6 col-lg-3 text-center">
+        <div class="steps-num">3</div>
+        <h6>Connect & apply</h6>
+        <p class="text-muted small">Join communities, follow professionals, apply to jobs and internships.</p>
+      </div>
+      <div class="col-md-6 col-lg-3 text-center">
+        <div class="steps-num">4</div>
+        <h6>Grow & give back</h6>
+        <p class="text-muted small">Become a mentor, instructor or employer and help the next generation.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= TESTIMONIALS ============= -->
+<section class="section-pad bg-brand-light">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">From our members</span>
+      <h2>What finance professionals say</h2>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card testimonial-card">
+          <div class="card-body p-4">
+            <div class="stars"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+            <p class="quote">"The GST course was practical and directly applicable. I cleared my CA articleship interview thanks to the skills I learned here."</p>
+            <div class="author">
+              <span class="directory-avatar avatar-sm">R</span>
+              <div><strong>Rajesh Iyer</strong><br><small class="text-muted">CA · Bengaluru</small></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card testimonial-card">
+          <div class="card-body p-4">
+            <div class="stars"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+            <p class="quote">"As a fresher I connected with three CAs through the communities section and landed an accounting role within a month."</p>
+            <div class="author">
+              <span class="directory-avatar avatar-sm">P</span>
+              <div><strong>Priya Sharma</strong><br><small class="text-muted">Accountant · Mumbai</small></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card testimonial-card">
+          <div class="card-body p-4">
+            <div class="stars"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+            <p class="quote">"Posting our finance roles here reached exactly the candidates we needed. The credential verification saved us weeks of background checks."</p>
+            <div class="author">
+              <span class="directory-avatar avatar-sm">A</span>
+              <div><strong>Acme Corp HR</strong><br><small class="text-muted">Employer · Pune</small></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= CTA ============= -->
+<section class="section-pad">
+  <div class="container">
+    <div class="profile-header text-center" style="padding:3rem 2rem">
+      <h2 class="text-white">Ready to grow your finance career?</h2>
+      <p class="text-white-50 lead mb-4">Join thousands of accounting, finance and FinTech professionals. Free to start.</p>
+      {% if not user.is_authenticated %}
+      <a href="{% url 'accounts:signup' %}" class="btn btn-light-hero btn-lg me-2">Create your free account</a>
+      <a href="{% url 'courses:list' %}" class="btn btn-outline-light btn-lg">Browse courses</a>
+      {% else %}
+      <a href="{% url 'networking:feed' %}" class="btn btn-light-hero btn-lg">Go to your feed</a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}

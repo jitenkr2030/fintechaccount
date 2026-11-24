@@ -1,0 +1,61 @@
+{% extends 'core/base.html' %}
+{% load crispy_forms_tags humanize %}
+{% block title %}News Feed{% endblock %}
+{% block content %}
+<div class="row g-4">
+  <div class="col-lg-8">
+    {% if user.is_authenticated %}
+    <div class="card shadow-sm mb-3"><div class="card-body">
+      <form method="post" action="{% url 'networking:post_create' %}" enctype="multipart/form-data">{% csrf_token %}
+        {{ post_form|crispy }}
+        <button class="btn btn-primary btn-sm">Post</button>
+      </form>
+    </div></div>
+    {% endif %}
+    {% for post in posts %}
+    <div class="card shadow-sm mb-3"><div class="card-body">
+      <div class="d-flex mb-2">
+        {% if post.author.avatar %}<img src="{{ post.author.avatar.url }}" class="rounded-circle me-2" width="40" height="40">{% endif %}
+        <div>
+          <a href="{% url 'profiles:detail' slug=post.author.profile.slug %}" class="text-decoration-none fw-semibold">{{ post.author.get_full_name }}</a>
+          <p class="small text-muted mb-0">{{ post.created_at|naturaltime }} · {{ post.get_post_type_display }}</p>
+        </div>
+      </div>
+      <a href="{% url 'networking:post_detail' post.pk %}" class="text-decoration-none text-dark">
+        {% if post.title %}<h6 class="mb-1">{{ post.title }}</h6>{% endif %}
+        <p class="mb-2">{{ post.body|truncatechars:280|linebreaksbr }}</p>
+      </a>
+      {% if post.image %}<img src="{{ post.image.url }}" class="img-fluid rounded mb-2">{% endif %}
+      <div class="text-muted small"><i class="bi bi-heart"></i> {{ post.likes_count }} &middot; <i class="bi bi-chat"></i> {{ post.comments_count }}</div>
+    </div></div>
+    {% empty %}
+    <div class="alert alert-info">No posts yet. Be the first to share something!</div>
+    {% endfor %}
+  </div>
+  <div class="col-lg-4">
+    {% if suggestions %}
+    <div class="card shadow-sm mb-3"><div class="card-body">
+      <h6 class="mb-3">People you may know</h6>
+      {% for s in suggestions %}
+      <div class="d-flex align-items-center mb-2">
+        <div class="directory-avatar me-2" style="width:36px;height:36px;font-size:.8rem">{{ s.first_name|first|default:'?' }}</div>
+        <div class="flex-grow-1">
+          <a href="{% url 'profiles:detail' slug=s.profile.slug %}" class="text-decoration-none small fw-semibold">{{ s.get_full_name }}</a>
+          <p class="small text-muted mb-0">{{ s.headline|default:s.display_role }}</p>
+        </div>
+        <form method="post" action="{% url 'networking:connect_toggle' s.id %}">{% csrf_token %}
+          <button class="btn btn-sm btn-outline-primary">Follow</button>
+        </form>
+      </div>
+      {% endfor %}
+    </div></div>
+    {% endif %}
+    <div class="card shadow-sm"><div class="card-body">
+      <h6 class="mb-2">Trending</h6>
+      {% for t in trending %}
+      <p class="mb-1 small"><a href="{% url 'networking:post_detail' t.pk %}" class="text-decoration-none">{{ t.title|default:t.body|truncatechars:60 }}</a></p>
+      {% empty %}<p class="small text-muted">No trending posts.</p>{% endfor %}
+    </div></div>
+  </div>
+</div>
+{% endblock %}

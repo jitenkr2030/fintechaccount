@@ -1,0 +1,15 @@
+{% extends 'core/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="card shadow-sm"><div class="card-body p-4">
+  <h2 class="h4 mb-3">Add Question - {{ assessment.title }}</h2>
+  <form method="post">{% csrf_token %}
+    {{ form|crispy }}
+    <h6>Choices</h6>
+    {{ choice_formset.management_form }}
+    {% for f in choice_formset %}{{ f|crispy }}{% endfor %}
+    <button class="btn btn-primary">Save question</button>
+    <a href="{% url 'assessments:detail' assessment.pk %}" class="btn btn-link">Done</a>
+  </form>
+</div></div>
+{% endblock %}

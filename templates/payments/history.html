@@ -1,0 +1,8 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<h1 class="h3 mb-4">Payment History</h1>
+<h5>Orders</h5>
+<div class="list-group mb-4">{% for o in orders %}<div class="list-group-item"><strong>₹{{ o.amount }}</strong> {{ o.get_content_type_label_display }} <span class="badge bg-secondary">{{ o.get_status_display }}</span> <span class="small text-muted">{{ o.created_at|date:'j M Y H:i' }}</span></div>{% empty %}<div class="alert alert-info">No orders.</div>{% endfor %}</div>
+<h5>Subscriptions</h5>
+<div class="list-group">{% for s in subscriptions %}<div class="list-group-item">{{ s.get_subscription_type_display }} - ₹{{ s.amount }} <span class="badge bg-secondary">{{ s.get_status_display }}</span> <span class="small text-muted">until {{ s.current_period_end|date:'j M Y' }}</span></div>{% empty %}<div class="alert alert-info">No subscriptions.</div>{% endfor %}</div>
+{% endblock %}

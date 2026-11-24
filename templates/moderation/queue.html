@@ -1,0 +1,6 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<h1 class="h3 mb-3">Moderation Queue ({{ pending_count }} pending)</h1>
+<form method="get" class="mb-3"><select name="status" class="form-select" style="width:auto;display:inline-block"><option value="">All statuses</option>{% for s,label in statuses %}<option value="{{ s }}" {% if selected_status == s %}selected{% endif %}>{{ label }}</option>{% endfor %}</select><button class="btn btn-outline-primary btn-sm">Filter</button></form>
+<div class="list-group">{% for r in reports %}<a href="{% url 'moderation:report_detail' r.pk %}" class="list-group-item list-group-item-action"><strong>{{ r.get_target_type_display }} #{{ r.target_id }}</strong> - {{ r.get_reason_display }} <span class="badge bg-secondary float-end">{{ r.get_status_display }}</span></a>{% empty %}<div class="alert alert-success">No reports. All clear!</div>{% endfor %}</div>
+{% endblock %}

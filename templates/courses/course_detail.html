@@ -1,0 +1,30 @@
+{% extends 'core/base.html' %}
+{% block title %}{{ course.title }}{% endblock %}
+{% block content %}
+<div class="card shadow-sm mb-3"><div class="card-body">
+  <span class="badge bg-secondary">{{ course.get_level_display }}</span>
+  <span class="badge bg-info">{{ course.get_delivery_display }}</span>
+  {% if course.is_free %}<span class="badge bg-success">Free</span>{% else %}<span class="badge bg-warning">₹{{ course.effective_price }}</span>{% endif %}
+  <h1 class="h3 mt-2">{{ course.title }}</h1>
+  <p class="lead text-muted">{{ course.subtitle }}</p>
+  <p>{{ course.description|linebreaksbr }}</p>
+  {% if course.instructor %}<p class="text-muted">By <a href="{% url 'instructors:detail' slug=course.instructor.instructor_profile.slug %}">{{ course.instructor.get_full_name }}</a></p>{% endif %}
+  <p class="text-muted small">{{ course.students_count }} students · {{ course.duration_hours }} hours · Rating {{ course.rating|default:'-' }}/5</p>
+  {% if user.is_authenticated %}
+    {% if enrollment %}
+      <a href="{% url 'courses:learn' slug=course.slug %}" class="btn btn-primary">Continue learning</a>
+    {% else %}
+      <form method="post" action="{% url 'courses:enroll' slug=course.slug %}">{% csrf_token %}<button class="btn btn-primary">Enroll</button></form>
+    {% endif %}
+  {% else %}
+    <a href="{% url 'accounts:login' %}" class="btn btn-primary">Log in to enroll</a>
+  {% endif %}
+</div></div>
+<h5>Curriculum</h5>
+{% for m in modules %}
+<div class="card mb-2"><div class="card-body">
+  <strong>{{ m.title }}</strong>
+  <ul class="mb-0">{% for l in m.lessons.all %}<li>{{ l.title }} <span class="text-muted small">({{ l.get_content_type_display }}{% if l.duration_minutes %}, {{ l.duration_minutes }}m{% endif %})</span></li>{% endfor %}</ul>
+</div></div>
+{% empty %}<p class="text-muted">No curriculum yet.</p>{% endfor %}
+{% endblock %}

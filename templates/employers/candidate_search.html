@@ -1,0 +1,13 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<h1 class="h3 mb-3">Search Candidates</h1>
+<form method="get" class="mb-3"><input name="q" class="form-control" placeholder="Name, title, industry, headline..." value="{{ q }}"></form>
+<div class="row g-3">
+{% for p in profiles %}
+<div class="col-md-6 col-lg-4"><div class="card h-100"><div class="card-body">
+  <a href="{% url 'profiles:detail' slug=p.slug %}">{{ p.user.get_full_name }}</a>
+  <p class="small text-muted mb-0">{{ p.current_title|default:p.user.headline }} · {{ p.industry|default:'' }}</p>
+</div></div></div>
+{% empty %}<div class="col-12"><div class="alert alert-info">No candidates found.</div></div>{% endfor %}
+</div>
+{% endblock %}

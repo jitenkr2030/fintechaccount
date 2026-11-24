@@ -1,0 +1,65 @@
+{% extends 'core/base.html' %}
+{% load static humanize %}
+{% block title %}Events - FinTech Accountant{% endblock %}
+{% block content %}
+<section class="hero" style="padding:3rem 0 4rem">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-8">
+        <span class="badge bg-light text-brand mb-2 px-3 py-2 rounded-pill">Pillar A · Network</span>
+        <h1>Webinars, seminars & workshops</h1>
+        <p class="lead">Learn from industry experts through live webinars, seminars and workshops on accounting, finance and FinTech.</p>
+      </div>
+      <div class="col-lg-4 d-none d-lg-block text-center">
+        <i class="bi bi-calendar-event" style="font-size:6rem;opacity:.3"></i>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-pad-sm">
+  <div class="container">
+    <form method="get" class="row g-2 mb-4">
+      <div class="col-md-6"><input name="q" class="form-control" placeholder="Search events..." value="{{ q }}"></div>
+      <div class="col-md-3">
+        <select name="event_type" class="form-select">
+          <option value="">All types</option>
+          {% for v,label in event_types %}<option value="{{ v }}" {% if selected_type == v %}selected{% endif %}>{{ label }}</option>{% endfor %}
+        </select>
+      </div>
+      <div class="col-md-2">
+        <div class="form-check mt-2"><input class="form-check-input" type="checkbox" name="upcoming" value="1" id="up" {% if upcoming == '1' %}checked{% endif %}><label class="form-check-label small" for="up">Upcoming only</label></div>
+      </div>
+      <div class="col-md-1"><button class="btn btn-brand w-100"><i class="bi bi-search"></i></button></div>
+    </form>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <p class="text-muted mb-0">{{ events|length }} events</p>
+      <a href="{% url 'events:create' %}" class="btn btn-brand btn-sm"><i class="bi bi-plus-lg"></i> Host an event</a>
+    </div>
+    <div class="row g-4">
+      {% for e in events %}
+      <div class="col-md-6 col-lg-4">
+        <div class="card event-card">
+          <div class="cover"><i class="bi bi-calendar-event"></i></div>
+          <div class="body">
+            <span class="badge bg-info mb-2">{{ e.get_event_type_display }}</span>
+            <h6><a href="{% url 'events:detail' slug=e.slug %}" class="text-decoration-none text-dark">{{ e.title }}</a></h6>
+            <p class="small text-muted mb-2"><i class="bi bi-calendar"></i> {{ e.starts_at|date:"j M Y, g:i A" }}</p>
+            <div class="meta">
+              {% if e.is_online %}<span><i class="bi bi-camera-video"></i> Online</span>{% else %}<span><i class="bi bi-geo-alt"></i> {{ e.venue|default:e.city }}</span>{% endif %}
+              <span><i class="bi bi-people"></i> {{ e.registrations_count }}</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mt-3 pt-2" style="border-top:1px solid var(--border)">
+              {% if e.is_paid %}<span class="price-tag">₹{{ e.price|floatformat:0 }}</span>{% else %}<span class="price-free">Free</span>{% endif %}
+              <a href="{% url 'events:detail' slug=e.slug %}" class="btn btn-sm btn-outline-brand">View</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-12"><div class="alert alert-info">No events found. <a href="{% url 'events:create' %}">Host the first one</a>.</div></div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

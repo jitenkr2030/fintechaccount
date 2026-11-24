@@ -1,0 +1,9 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<h1 class="h3">{{ assessment.title }}</h1>
+<p>Your latest attempt: <strong>{{ latest.score_pct }}%</strong> - {% if latest.is_passed %}<span class="badge bg-success">Passed</span>{% else %}<span class="badge bg-danger">Failed</span>{% endif %}</p>
+<p class="text-muted">Status: {{ latest.get_status_display }}</p>
+{% for a in attempts %}
+<div class="card mb-2"><div class="card-body small">{{ a.score_pct }}% on {{ a.started_at|date:'j M Y H:i' }} - {{ a.get_status_display }}</div></div>
+{% endfor %}
+{% endblock %}

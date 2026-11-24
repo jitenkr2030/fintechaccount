@@ -1,0 +1,12 @@
+{% extends 'core/base.html' %}
+{% block title %}{{ instructor.title }}{% endblock %}
+{% block content %}
+<div class="card shadow-sm mb-3"><div class="card-body">
+  <h1 class="h3">{{ instructor.user.get_full_name }}</h1>
+  <p class="text-muted">{{ instructor.title }}</p>
+  <p>{{ instructor.bio|linebreaksbr }}</p>
+  <p class="small text-muted">{{ instructor.students_count }} students · {{ instructor.courses_count }} courses · Rating {{ instructor.avg_rating|default:'-' }}</p>
+</div></div>
+<h5>Courses by {{ instructor.user.first_name }}</h5>
+{% for c in courses %}<p><a href="{% url 'courses:detail' slug=c.slug %}">{{ c.title }}</a> <span class="text-muted small">({{ c.students_count }} students)</span></p>{% empty %}<p class="text-muted">No courses yet.</p>{% endfor %}
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'core/base.html' %}
+{% block title %}Verify Certificate{% endblock %}
+{% block content %}
+<h1 class="h3 mb-4">Verify a Certificate</h1>
+<div class="row justify-content-center"><div class="col-md-6">
+  <div class="card shadow-sm"><div class="card-body p-4">
+    <form method="post">{% csrf_token %}
+      <div class="mb-2"><label class="form-label">Certificate ID</label><input name="certificate_id" class="form-control" value="{{ request.POST.certificate_id|default:'' }}"></div>
+      <div class="mb-3"><label class="form-label">Verification code</label><input name="verification_code" class="form-control" value="{{ request.POST.verification_code|default:'' }}"></div>
+      <button class="btn btn-primary w-100">Verify</button>
+    </form>
+    {% if submitted %}
+      <hr>
+      {% if valid and certificate %}
+        <div class="alert alert-success">Valid certificate.<br><strong>{{ certificate.user.get_full_name }}</strong> completed <strong>{{ certificate.course.title }}</strong>.</div>
+      {% else %}
+        <div class="alert alert-danger">Invalid certificate or code.</div>
+      {% endif %}
+    {% endif %}
+  </div></div>
+</div></div>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<h1 class="h3 mb-4">Your Insights</h1>
+<div class="row g-3">
+  <div class="col-md-6"><div class="card h-100 shadow-sm"><div class="card-body">
+    <h5>Recommended courses</h5>
+    {% for r in course_recs %}<p class="mb-1"><a href="{{ r.target_url }}">{{ r.target_text }}</a> <span class="small text-muted">{{ r.reason }}</span></p>{% empty %}<p class="text-muted small">No recommendations yet. Complete your profile to get suggestions.</p>{% endfor %}
+  </div></div></div>
+  <div class="col-md-6"><div class="card h-100 shadow-sm"><div class="card-body">
+    <h5>Recommended jobs</h5>
+    {% for r in job_recs %}<p class="mb-1"><a href="{{ r.target_url }}">{{ r.target_text }}</a> <span class="small text-muted">{{ r.reason }}</span></p>{% empty %}<p class="text-muted small">No recommendations yet. Add skills to your profile to get matched.</p>{% endfor %}
+  </div></div></div>
+</div>
+{% endblock %}

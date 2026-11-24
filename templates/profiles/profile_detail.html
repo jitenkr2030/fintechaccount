@@ -1,0 +1,45 @@
+{% extends 'core/base.html' %}
+{% block title %}{{ profile.user.get_full_name }}{% endblock %}
+{% block content %}
+<div class="card shadow-sm mb-3"><div class="card-body">
+  <div class="d-flex">
+    {% if profile.user.avatar %}<img src="{{ profile.user.avatar.url }}" class="rounded-circle me-3" width="80" height="80">{% else %}<div class="directory-avatar me-3" style="width:80px;height:80px;font-size:1.5rem">{{ profile.user.first_name|first|default:'?' }}</div>{% endif %}
+    <div class="flex-grow-1">
+      <h1 class="h4 mb-1">{{ profile.user.get_full_name }}</h1>
+      <p class="mb-1 text-muted">{{ profile.user.headline|default:profile.current_title }}</p>
+      <p class="mb-2 small text-muted">
+        {% if profile.current_company %}{{ profile.current_company }} &middot; {% endif %}
+        {% if profile.user.city %}{{ profile.user.city }}{% endif %}
+        {% if profile.is_verified_professional %}<span class="badge bg-success ms-1">Verified</span>{% endif %}
+        {% if profile.is_open_to_work %}<span class="badge bg-primary ms-1">Open to work</span>{% endif %}
+      </p>
+      {% if is_owner %}
+      <a href="{% url 'profiles:my_edit' %}" class="btn btn-outline-primary btn-sm">Edit</a>
+      {% else %}
+      <form method="post" action="{% url 'networking:connect_toggle' profile.user.id %}" class="d-inline">{% csrf_token %}
+        <button name="kind" value="follow" class="btn btn-primary btn-sm">Follow</button>
+        <button name="kind" value="connect" class="btn btn-outline-primary btn-sm">Connect</button>
+      </form>
+      {% endif %}
+    </div>
+  </div>
+</div></div>
+<div class="row g-3">
+  <div class="col-md-6"><div class="card h-100 shadow-sm"><div class="card-body">
+    <h6>Experience</h6>
+    {% for e in profile.experiences.all %}<p class="mb-1"><strong>{{ e.title }}</strong> at {{ e.company }}<br><span class="small text-muted">{{ e.start_date }} - {{ e.end_date|default:'Present' }}</span></p>{% empty %}<p class="text-muted small">No experience listed.</p>{% endfor %}
+  </div></div></div>
+  <div class="col-md-6"><div class="card h-100 shadow-sm"><div class="card-body">
+    <h6>Education</h6>
+    {% for e in profile.educations.all %}<p class="mb-1"><strong>{{ e.degree }}</strong> - {{ e.institution }}<br><span class="small text-muted">{{ e.start_year }} - {{ e.end_date|default:'' }}</span></p>{% empty %}<p class="text-muted small">No education listed.</p>{% endfor %}
+  </div></div></div>
+  <div class="col-md-6"><div class="card h-100 shadow-sm"><div class="card-body">
+    <h6>Skills</h6>
+    {% for s in profile.skills.all %}<span class="badge bg-light text-dark me-1 mb-1">{{ s.skill.name }} · {{ s.level }}</span>{% empty %}<p class="text-muted small">No skills listed.</p>{% endfor %}
+  </div></div></div>
+  <div class="col-md-6"><div class="card h-100 shadow-sm"><div class="card-body">
+    <h6>Certifications</h6>
+    {% for c in profile.certifications.all %}<p class="mb-1"><strong>{{ c.name }}</strong> - {{ c.issuing_body }}{% if c.is_statutory %} <span class="badge bg-success">Statutory</span>{% else %} <span class="badge bg-secondary">Course completion</span>{% endif %}</p>{% empty %}<p class="text-muted small">No certifications listed.</p>{% endfor %}
+  </div></div></div>
+</div>
+{% endblock %}

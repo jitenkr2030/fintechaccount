@@ -1,0 +1,15 @@
+{% extends 'core/base.html' %}
+{% block title %}Applicants: {{ job.title }}{% endblock %}
+{% block content %}
+<h1 class="h4">Applicants for: {{ job.title }}</h1>
+<div class="list-group mt-3">
+{% for a in applications %}
+<a href="{% url 'applications:my_detail' a.pk %}" class="list-group-item list-group-item-action">
+  <div class="d-flex justify-content-between">
+    <div><strong>{{ a.applicant.get_full_name }}</strong><br><span class="small text-muted">{{ a.applicant.headline|default:'' }}</span></div>
+    <span class="badge bg-secondary">{{ a.get_status_display }}</span>
+  </div>
+</a>
+{% empty %}<div class="alert alert-info">No applications yet.</div>{% endfor %}
+</div>
+{% endblock %}

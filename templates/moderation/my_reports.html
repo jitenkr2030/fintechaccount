@@ -1,0 +1,4 @@
+{% extends 'core/base.html' %}
+{% block content %}<h1 class="h3 mb-3">My Reports</h1>
+<div class="list-group">{% for r in reports %}<div class="list-group-item"><strong>{{ r.get_target_type_display }} #{{ r.target_id }}</strong> - {{ r.get_reason_display }} <span class="badge bg-secondary">{{ r.get_status_display }}</span></div>{% empty %}<div class="alert alert-info">No reports.</div>{% endfor %}</div>
+{% endblock %}

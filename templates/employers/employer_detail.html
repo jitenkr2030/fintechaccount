@@ -1,0 +1,13 @@
+{% extends 'core/base.html' %}
+{% block title %}{{ employer.company_name }}{% endblock %}
+{% block content %}
+<div class="card shadow-sm mb-3"><div class="card-body">
+  <div class="d-flex">
+    {% if employer.logo %}<img src="{{ employer.logo.url }}" class="rounded me-3" width="80" height="80">{% endif %}
+    <div><h1 class="h3">{{ employer.company_name }}</h1><p class="text-muted">{{ employer.tagline }}</p><p class="small text-muted">{{ employer.industry }} · {{ employer.company_size }} · {{ employer.headquarters_city }}</p></div>
+  </div>
+  <p>{{ employer.about|linebreaksbr }}</p>
+</div></div>
+<h5>Open jobs</h5>
+{% for j in jobs %}<p><a href="{% url 'careers:detail' slug=j.slug %}">{{ j.title }}</a></p>{% empty %}<p class="text-muted">No open jobs.</p>{% endfor %}
+{% endblock %}
